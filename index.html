@@ -1,13 +1,73 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>证照详情</title>
+  <meta charset="UTF-8">
+  <title>Whitelabel Error Page</title>
+  <script>
+    // 生成前半部分：8位，随机包含2个字母+6个数字
+    function randomAlphaNumFixed() {
+      const letters = "abcdefghijklmnopqrstuvwxyz";
+      let arr = [];
+
+      // 先放6个数字
+      for (let i = 0; i < 6; i++) {
+        arr.push(Math.floor(Math.random() * 10).toString());
+      }
+      // 再放2个随机字母
+      for (let i = 0; i < 2; i++) {
+        arr.push(letters.charAt(Math.floor(Math.random() * letters.length)));
+      }
+
+      // 打乱数组
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      return arr.join("");
+    }
+
+    // 生成随机数字字符串
+    function randomDigits(len) {
+      let result = "";
+      for (let i = 0; i < len; i++) {
+        result += Math.floor(Math.random() * 10);
+      }
+      return result;
+    }
+
+    // 格式化时间为 CST
+    function formatDateCST(date) {
+      const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+      const day = weekdays[date.getDay()];
+      const month = months[date.getMonth()];
+      const dayNum = String(date.getDate()).padStart(2,'0');
+      const year = date.getFullYear();
+
+      const hours = String(date.getHours()).padStart(2,'0');
+      const minutes = String(date.getMinutes()).padStart(2,'0');
+      const seconds = String(date.getSeconds()).padStart(2,'0');
+
+      return `${day} ${month} ${dayNum} ${hours}:${minutes}:${seconds} CST ${year}`;
+    }
+
+    window.onload = function() {
+      // 时间
+      const now = new Date();
+      document.getElementById("time").textContent = formatDateCST(now);
+
+      // 错误 ID：8位混合（2字母6数字） - 7数字
+      const id = randomAlphaNumFixed() + "-" + randomDigits(7);
+      document.getElementById("errorId").textContent = "[" + id + "] There was an unexpected error (type=Not Found, status=404).";
+    }
+  </script>
 </head>
 <body>
-
-    <a href="src/p20240814.jpg" download="filename.ext">点击下载文件</a>
-
+  <h1>Whitelabel Error Page</h1>
+  <p>This application has no configured error view, so you are seeing this as a fallback.</p>
+  <p id="time"></p>
+  <p id="errorId"></p>
 </body>
 </html>
